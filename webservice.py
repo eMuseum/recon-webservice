@@ -1,4 +1,4 @@
-from bottle import route, run, request, static_file
+from bottle import route, run, request, static_file, response
 from os import path, makedirs
 from view import View
 from upload import Upload
@@ -73,6 +73,7 @@ def index():
 """
 @route('/static/:path#.+#', name='static')
 def static(path):
+	response.headers['Cache-Control'] = 'public, max-age=86400'
 	return static_file(path, root='static')
 	
 
