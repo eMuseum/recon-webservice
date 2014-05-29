@@ -1,5 +1,6 @@
-from bottle import route, run, template, request, os
+from bottle import route, run, request, os, static_file
 from os import path, makedirs
+from view import View
 import neuralnet
 import autoincrement
 
@@ -25,14 +26,26 @@ def do_upload():
 
     return str(id)
 
+
 """Webservice index page
 
 :returns: Parsed template of the website
 """
 @route('/')
 def index():
-	return template('index')
+	return View('index').render()
 
+
+"""Returns an static file, such as CSS files, JS and fonts
+
+:returns: Static file
+"""
+@route('/static/:path#.+#', name='static')
+def static(path):
+    return static_file(path, root='static')
+	
+
+# Setup a few variables
 image_index = autoincrement.Autoincrement(1000)
 nn = neuralnet.Neuralnet()
 

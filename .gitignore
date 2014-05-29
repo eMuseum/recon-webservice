@@ -1,0 +1,5 @@
+# Ignore all Python Compiled files
+*.pyc
+
+# Ignore images folder and its contents
+images/
