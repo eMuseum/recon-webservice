@@ -1,50 +1,19 @@
-from bottle import route, run, request, os, static_file
-from os import path, makedirs, SEEK_END, SEEK_SET
+from bottle import route, run, request, static_file
+from os import path, makedirs
 from view import View
+from upload import Upload
 import neuralnet
 import autoincrement
 
-
-"""Checks if a file was uploaded
-
-:param field_name: HTTP input name
-:returns: True if it was uploaded
-"""
-def has_uploaded(field_name):
-	return request.files.get(field_name) != None
-
-
-"""Tests whether the uploaded file is within max size
-Must be called after a successful has_uploaded
-
-:param field_name: HTTP input name
-:returns: True if it does not exceed
-"""
-def check_upload_size(field_name, max_size):
-	file = request.files.get(field_name).file
-	file.seek(0, SEEK_END)
-	result = file.tell() < max_size
-	file.seek(0, SEEK_SET)
-	return result
-	
 
 """Does the actual saving and processing of the upload
 
 :param field_name: HTTP input name
 :returns: ID of the recognized image
 """
-def parse_upload(field_name):
-	# File fetching
-	upload = request.files.get(field_name)
-	name, ext = os.path.splitext(upload.filename)
-	ext = ext.lower()
-
-	# Extension checking
-	if ext not in ('.png','.jpg','.jpeg'):
-		return 'File extension not allowed.'
-
+def parse_upload(upload):
 	# Save and recognize
-	save_path = 'images/' + str(image_index) + ext
+	save_path = 'images/' + str(image_index) + upload.ext
 	upload.save(save_path, overwrite=True)
 	return nn.recognize(save_path)
 
@@ -55,13 +24,17 @@ def parse_upload(field_name):
 """
 @route('/android', method='POST')
 def do_android_upload():
-	if not has_uploaded('upload'):
+	upload = Upload('upload', ('.png','.jpg','.jpeg'), 3 * 1024 * 1024)
+	if not upload.has_uploaded():
 		return '-1'
 	
-	if not check_upload_size('upload', 3 * 1024 * 1024):
+	if not upload.check_upload_size():
 		return '-1'
 	
-	return str(parse_upload('upload'))
+	if not upload.check_extension():
+		return '-1'
+	
+	return str(parse_upload(upload))
 
 
 """Performs the image saving after a POST event is received
@@ -70,13 +43,17 @@ def do_android_upload():
 """
 @route('/upload', method='POST')
 def do_normal_upload():
-	if not has_uploaded('upload'):
+	upload = Upload('upload', ('.png','.jpg','.jpeg'), 3 * 1024 * 1024)
+	if not upload.has_uploaded():
 		return View('no_upload').render()	
 	
-	if not check_upload_size('upload', 3 * 1024 * 1024):	
-		return View('upload_size').render()		
+	if not upload.check_upload_size():
+		return View('upload_size').render()
+		
+	if not upload.check_extension():
+		return View('upload_extension').render()
 	
-	id = parse_upload('upload')
+	id = parse_upload(upload)
 	return View('recognize', { 'id' : id, 'name' : nn.get_name_by_id(id) } ).render()
 
 
