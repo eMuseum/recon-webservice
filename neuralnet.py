@@ -37,3 +37,11 @@ class Neuralnet:
 		y = self.clf.predict(feat)[0]
 		#p = clf.predict_proba(feat)[0]
 		return self.imagesIDs[y]
+
+	"""Given an ID, returns the name"
+	
+	:param id: Image ID
+	:returns: Image name
+	"""
+	def get_name_by_id(self, id):
+		return self.imagesNames[self.imagesIDs.index(id)]

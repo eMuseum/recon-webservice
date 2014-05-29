@@ -20,7 +20,6 @@ class View(object):
 		header = template('header', self.args)
 		body = template(self.template, self.args)
 		footer = template('footer', self.args)
-		
 		return header + body + footer
 
 	

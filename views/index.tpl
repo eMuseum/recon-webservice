@@ -1,4 +1,4 @@
-<div class="container">
+	<div class="container">
       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="#">Home</a></li>
@@ -11,8 +11,9 @@
       <div class="jumbotron">
         <h1>Upload an image</h1>
 		<form action="/upload" method="post" enctype="multipart/form-data">
-			<p class="lead">Select a file: <input type="file" name="upload" /></p>
-			<p><a class="btn btn-lg btn-success" href="javascript:void(0);" onclick="$(this).closest('form').submit();" role="button">Start Upload</a></p>
+			<input type="file" name="upload" class="filestyle" data-buttonText="Browse image" data-iconName="glyphicon-inbox" data-buttonName="btn-primary" />
+			<br />
+			<p><a class="btn-start btn-lg btn-success" href="#" onclick="$(this).closest('form').submit();" role="button">Start Upload</a></p>
 		</form>
       </div>
 
@@ -25,7 +26,7 @@
           <p>Everything is supported by Python, including this webservice.</p>
 
           <h4>Universitat de Barcelona</h4>
-          <p>This project is hosted on Universitat of Barcelona.</p>
+          <p>This project is hosted by Universitat of Barcelona.</p>
         </div>
 
         <div class="col-lg-6">
@@ -45,4 +46,3 @@
       </div>
 
     </div> <!-- /container -->
-	
