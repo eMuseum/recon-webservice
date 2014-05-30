@@ -1,13 +1,14 @@
-from bottle import template, default_app
+from bottle import template, default_app, request
 
 class View(object):
 	# Default arguments that get passed to the template
-	template_arguments = { 'get_url' : default_app().get_url }
+	template_arguments = { 'get_url' : default_app().get_url, 'route' : '' }
 
 	"""Initializes a View object, used to make the use of templates easier"""
 	def __init__(self, template, args = {}):
 		self.template = template
 		self.args = self.template_arguments
+		self.args['route'] = request.path # Must be done here! We must have a valid request
 		self.add_arguments(args)
 	
 	

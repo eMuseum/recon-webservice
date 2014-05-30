@@ -17,3 +17,13 @@
 		<![endif]-->
 	</header>
 	<body>
+	
+	<div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li {{ "class=active" if route == '/' else "" }}><a href="/">Home</a></li>
+          <li {{ "class=active" if route == '/about' else "" }}><a href="/about">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+        <h3 class="text-muted">eMuseum Recognition</h3>
+      </div>

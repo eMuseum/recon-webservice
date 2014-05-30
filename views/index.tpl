@@ -1,13 +1,3 @@
-	<div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">eMuseum Recognition</h3>
-      </div>
-
       <div class="jumbotron">
         <h1>Upload an image</h1>
 		<form action="/upload" method="post" enctype="multipart/form-data">
