@@ -10,7 +10,7 @@
 
       <div class="jumbotron">
 		<h1>Can not recognize</h1>
-		<br />
+		<p><img src="{{ get_url('images', filename=img) }}" class="img-recon" /></p>
 		<p><a class="btn-start btn-lg btn-success" href="/" role="button">Back</a></p>
 	  </div>
 

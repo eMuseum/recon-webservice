@@ -50,6 +50,10 @@ body {
   padding: 14px 24px;
   font-size: 21px;
 }
+.jumbotron .img-recon {
+  margin: 0 0 10px;
+  width: 100%;
+}
 
 /* Supporting marketing content */
 .marketing {

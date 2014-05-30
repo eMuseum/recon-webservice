@@ -4,11 +4,11 @@
 class Autoincrement:
 	"""Initializes the class
 
-	:param max: Maximum value minus one until cycling
+	:param max: Maximum value plus one until cycling
 	:returns: object
 	"""
 	def __init__(self, max):
-		self.__index = 0
+		self.__index = -1
 		self.__max = max
 	
 	"""Increments internal counter by one.

@@ -1,9 +1,8 @@
-from bottle import route, run, request, static_file, response
-from os import path, makedirs
+from bottle import route, run, request, static_file, response, HTTPError
+from os import path, makedirs, remove
 from view import View
 from upload import Upload
 import neuralnet
-import autoincrement
 
 
 """Does the actual saving and processing of the upload
@@ -13,7 +12,7 @@ import autoincrement
 """
 def parse_upload(upload):
 	# Save and recognize
-	save_path = 'images/' + str(image_index) + upload.ext
+	save_path = 'images/' + str(upload)
 	upload.save(save_path, overwrite=True)
 	return nn.recognize(save_path)
 
@@ -55,9 +54,9 @@ def do_normal_upload():
 	
 	id = parse_upload(upload)
 	if id == -1:
-		return View('recognize_failed').render()
+		return View('recognize_failed', { 'img' : str(upload) } ).render()
 	
-	return View('recognize', { 'id' : id, 'name' : nn.get_name_by_id(id) } ).render()
+	return View('recognize', { 'id' : id, 'name' : nn.get_name_by_id(id), 'img' : str(upload) } ).render()
 
 
 
@@ -78,10 +77,22 @@ def index():
 def static(path):
 	response.headers['Cache-Control'] = 'public, max-age=86400'
 	return static_file(path, root='static')
+
+
+"""Returns an image and deletes it
+
+:returns: Image file
+"""
+@route('/images/<filename>', name='images')
+def static(filename):
+	file = static_file(filename, root='images')
+	if not isinstance(file, HTTPError):
+		remove('images/' + filename)
+	
+	return file
 	
 
 # Setup a few variables
-image_index = autoincrement.Autoincrement(1000)
 nn = neuralnet.Neuralnet()
 
 # Check if images directory exists, and if not create it

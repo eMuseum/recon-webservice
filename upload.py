@@ -1,11 +1,16 @@
 from bottle import request
 from os import path, makedirs, SEEK_END, SEEK_SET
+from time import time
+import autoincrement
 
 class Upload:
+	index = autoincrement.Autoincrement(100)
+
 	def __init__(self, field_name, extensions, max_size):
 		self.file_upload = request.files.get(field_name)
 		self.extensions = extensions
 		self.max_size = max_size
+		self.hash_name = ''
 		
 		if self.file_upload != None:
 			self.name, ext = path.splitext(self.file_upload.filename)
@@ -42,6 +47,16 @@ class Upload:
 	def check_extension(self):
 		# Extension checking
 		return self.ext in self.extensions
+	
+	
+	"""Returns a unique hash of the file as string
+	
+	:returns: Unique hash
+	"""
+	def __str__(self):
+		if self.hash_name == '':
+			self.hash_name = str(time()) + self.name + str(Upload.index) + self.ext
+		return self.hash_name
 	
 
 	"""Saves the upload"""
