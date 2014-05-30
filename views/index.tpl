@@ -37,7 +37,7 @@
           <p>eMuseum is an Android application which features QR reading and image recognition.</p>
 
           <h4>Acknowledgements</h4>
-          <p>We are particularly grateful for the assistance given by Santi Seguí Mesquida.<br />We wish to acknowledge the help provided by Frances Dantí Espinasa.</p>
+          <p>We are particularly grateful for the assistance given by Dr. Santi Seguí Mesquida.<br />We wish to acknowledge the help provided by Frances Dantí Espinasa.</p>
         </div>
       </div>
 
