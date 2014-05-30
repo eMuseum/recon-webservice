@@ -7,8 +7,11 @@ class Upload:
 		self.extensions = extensions
 		self.max_size = max_size
 		
-		self.name, ext = path.splitext(self.file_upload.filename)
-		self.ext = ext.lower()
+		if self.file_upload != None:
+			self.name, ext = path.splitext(self.file_upload.filename)
+			self.ext = ext.lower()
+		else:
+			self.name, self.ext = '', ''
 	
 	"""Checks if a file was uploaded
 
