@@ -54,6 +54,9 @@ body {
   margin: 0 0 10px;
   width: 100%;
 }
+.jumbotron .about > p {
+  font-size: initial;
+}
 
 /* Supporting marketing content */
 .marketing {

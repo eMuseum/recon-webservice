@@ -60,6 +60,15 @@ def do_normal_upload():
 
 
 
+"""Webservice about page
+
+:returns: Parsed template of the website
+"""
+@route('/about')
+def about():
+	return View('about').render()
+
+
 """Webservice index page
 
 :returns: Parsed template of the website
