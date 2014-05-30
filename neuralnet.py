@@ -14,8 +14,8 @@ except:
    import pickle
   
 class Neuralnet:
-	imagesIDs = [-1,6,3,4,14,1,2,16,7,9,10,8,13,11,15,5,12]
-	imagesNames = ["","Guernica","El abside de san clemente","El dormitorio de arles","Paisage catalan","ciencia y caridad", "condensation cube","retrat de la tia pepa","la masia","la minotauromaquia","la noche estrellada","las meninas","la ultima cena","la persistencia de la memoria","port alguer","el gran masturbador","la tentacion de san antonio"]
+	imagesIDs = [6,3,4,14,1,2,16,7,9,10,8,13,11,15,5,12]
+	imagesNames = ["Guernica","El abside de san clemente","El dormitorio de arles","Paisage catalan","ciencia y caridad", "condensation cube","retrat de la tia pepa","la masia","la minotauromaquia","la noche estrellada","las meninas","la ultima cena","la persistencia de la memoria","port alguer","el gran masturbador","la tentacion de san antonio"]
 
 	def __init__(self):
 		self.net = caffe.imagenet.ImageNetClassifier(caffe_root + 'examples/imagenet/imagenet_deploy.prototxt',
@@ -30,12 +30,16 @@ class Neuralnet:
 	def recognize(self, filePath):
 		# Get features from image
 		scores = self.net.predict(filePath)
-		feat = self.net.caffenet.blobs['fc6'].data[4]
+		feat = self.net.caffenet.blobs['fc7'].data[4]
 		
 		# Get prediction
 		feat = feat.flatten()
 		y = self.clf.predict(feat)[0]
-		#p = clf.predict_proba(feat)[0]
+		
+		# Class -1 is used as error / can't predict
+		if y == -1:
+			return -1;
+		
 		return self.imagesIDs[y]
 
 	"""Given an ID, returns the name"

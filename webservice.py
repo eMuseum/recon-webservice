@@ -54,6 +54,9 @@ def do_normal_upload():
 		return View('upload_extension').render()
 	
 	id = parse_upload(upload)
+	if id == -1:
+		return View('recognize_failed').render()
+	
 	return View('recognize', { 'id' : id, 'name' : nn.get_name_by_id(id) } ).render()
 
 
