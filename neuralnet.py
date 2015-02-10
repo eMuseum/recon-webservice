@@ -6,7 +6,6 @@ import sys
 sys.path.insert(0, caffe_root + 'python')
 
 import caffe
-import caffe.imagenet
 
 try:
    import cPickle as pickle
@@ -18,10 +17,12 @@ class Neuralnet:
 	imagesNames = ["Guernica","El abside de san clemente","El dormitorio de arles","Paisage catalan","ciencia y caridad", "condensation cube","retrat de la tia pepa","la masia","la minotauromaquia","la noche estrellada","las meninas","la ultima cena","la persistencia de la memoria","port alguer","el gran masturbador","la tentacion de san antonio"]
 
 	def __init__(self):
-		self.net = caffe.imagenet.ImageNetClassifier(caffe_root + 'examples/imagenet/imagenet_deploy.prototxt',
-                                        caffe_root + 'examples/imagenet/caffe_reference_imagenet_model')
-		self.net.caffenet.set_phase_test()
-		self.net.caffenet.set_mode_cpu()
+		self.net = caffe.Classifier(caffe_root + 'models/bvlc_reference_caffenet/deploy.prototxt',
+                                        caffe_root + 'models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel',
+                                        mean=np.load(caffe_root + 'python/caffe/imagenet/ilsvrc_2012_mean.npy'),
+                                        channel_swap=(2,1,0),
+                                        raw_scale=255,
+                                        image_dims=(256,256))
 
 		with open(caffe_root + 'data/pis_12/clf', 'rb') as handle:
 			self.clf = pickle.load(handle)
@@ -29,8 +30,9 @@ class Neuralnet:
 		
 	def recognize(self, filePath):
 		# Get features from image
-		scores = self.net.predict(filePath)
-		feat = self.net.caffenet.blobs['fc7'].data[4]
+		image = caffe.io.load_image(filePath)
+		scores = self.net.predict([image])
+		feat = self.net.blobs['fc7'].data[4]
 		
 		# Get prediction
 		feat = feat.flatten()
