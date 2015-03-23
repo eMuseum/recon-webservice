@@ -17,9 +17,12 @@ class Neuralnet:
 	imagesNames = ["Guernica","El abside de san clemente","El dormitorio de arles","Paisage catalan","ciencia y caridad", "condensation cube","retrat de la tia pepa","la masia","la minotauromaquia","la noche estrellada","las meninas","la ultima cena","la persistencia de la memoria","port alguer","el gran masturbador","la tentacion de san antonio"]
 
 	def __init__(self):
+		m = np.load(caffe_root + 'python/caffe/imagenet/ilsvrc_2012_mean.npy')
+		m = m[:, :227, :227]
+
 		self.net = caffe.Classifier(caffe_root + 'models/bvlc_reference_caffenet/deploy.prototxt',
                                         caffe_root + 'models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel',
-                                        mean=np.load(caffe_root + 'python/caffe/imagenet/ilsvrc_2012_mean.npy'),
+                                        mean=m,
                                         channel_swap=(2,1,0),
                                         raw_scale=255,
                                         image_dims=(256,256))
